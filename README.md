@@ -136,14 +136,6 @@ docker run --rm `
 - **Task 1b:**  
   Each JSON includes `"title"`, `"outline"`, `"extracted_sections"`, and `"subsection_analysis"` — all per PDF.
 
-## 🏁 Tips
-
-- **Run one collection at a time for Task 1b.** Judges expect this—and it allows QA per-step.
-- **Outputs are always per-PDF in the chosen output folder.**
-- **If using Docker, always use PowerShell backtick (\`) for line breaks on Windows.**
-- **No separate Task 2 script needed. Task 1b supports all persona-collection outputs.**
-- **Scripts and Dockerfile are CPU-only, offline, and run under 60 seconds for standard collection sizes.**
-
 ## 🧪 Testing
 
 Sample outputs are under `outputs/`. For correctness, review the extracted JSONs or use your own test script.
