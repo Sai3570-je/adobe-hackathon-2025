@@ -1,0 +1,5 @@
+PyMuPDF
+
+
+# PDF parsing and layout extraction
+PyMuPDF==1.22.3
