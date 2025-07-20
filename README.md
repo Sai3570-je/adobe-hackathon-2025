@@ -1,160 +1,150 @@
-Adobe India Hackathon 2025 – PDF Processing Solution
-This project provides complete, modular, and hackathon-compliant solutions for:
+# Adobe India Hackathon 2025 – PDF Processing Solutions
 
-Task 1a: PDF outline extraction (document title and hierarchical outline)
+This repository contains complete, efficient solutions for:
 
-Task 1b: Section extraction with subsection analysis and persona-driven relevance ranking for multi-document collections
+- **Task 1a:** PDF outline extraction
+- **Task 1b:** Advanced PDF section/subsection extraction with persona-driven ranking
 
-⚙️ Features & Constraints
-CPU-only (no GPU)
+There is **no separate Task 2**—all collection/persona outputs are handled via Task 1b as per the official instructions.
 
-No internet access required (offline processing)
+## 📁 Directory Structure
 
-Model size ≤ 200 MB
-
-AMD64-compatible Docker container
-
-Fast processing using PyMuPDF
-
-Outputs JSON files (one per PDF or per collection as needed)
-
-NDA-safe and fully compliant with official Adobe Hackathon rules
-
-📁 Directory Structure
-graphql
-Copy
-Edit
+```text
 submission/
+│
 ├── src/
-│   ├── process_pdfs_1a.py          # Task 1a: extract titles + hierarchical outline
-│   ├── process_pdfs_1b.py          # Task 1b: extract and rank sections + analysis
-│   └── requirements.txt            # PyMuPDF dependency
+│   ├── process_pdfs_1a.py         # Task 1a: PDF outline extraction
+│   ├── process_pdfs_1b.py         # Task 1b: Section extraction, ranking, persona analysis (collections)
+│   └── requirements.txt           # PyMuPDF dependency
 │
 ├── data/
 │   └── sample_pdfs/
-│       ├── task1/                  # PDFs for Task 1a
-│       └── task2/                  # PDFs for Task 1b (organized by collection)
-│           ├── Collection 1/PDFs/
-│           ├── Collection 2/PDFs/
-│           └── Collection 3/PDFs/
+│       ├── task1/                     # PDFs for Task 1a
+│       └── task2/
+│           ├── Collection 1/PDFs/     # PDFs for Collection 1
+│           ├── Collection 2/PDFs/     # PDFs for Collection 2
+│           └── Collection 3/PDFs/     # PDFs for Collection 3
 │
 ├── outputs/
-│   ├── 1a_outputs/                 # Task 1a JSON outputs
+│   ├── 1a_outputs/                # Task 1a JSONs (per PDF)
 │   └── 1b_outputs/
-│       ├── Collection1/            # Task 1b JSON outputs per PDF
+│       ├── Collection1/           # Task 1b JSONs (per PDF, persona-aware)
 │       ├── Collection2/
 │       └── Collection3/
 │
-├── Dockerfile                     # CPU-only Docker container setup
-└── README.md                      # This document
-🖥️ Dependencies & Installation
-Install dependencies with:
+├── Dockerfile
+└── README.md (this file)
+```
 
-bash
-Copy
-Edit
+## 🖥️ Dependencies
+
+Install dependencies (from project root):
+
+```sh
 pip install -r src/requirements.txt
-Uses PyMuPDF==1.22.3
+```
 
-No GPU or internet required
+`src/requirements.txt` contents:
+```
+PyMuPDF==1.22.3
+```
 
-Lightweight and efficient (<200 MB runtime footprint)
+- Scripts run CPU-only, offline, <60s per collection, model size <1GB.
 
-🚀 How to Run
-Task 1a — PDF Outline Extraction
-Extract document title and hierarchical outline (H1, H2, H3) with page numbers.
+## 🚩 Task 1a — PDF Outline Extraction
 
-Run locally:
+**Extracts document title and clean hierarchical outline for each PDF.**
 
-From the root submission/ folder:
+### **Run Locally:**
 
-bash
-Copy
-Edit
+```sh
 python src/process_pdfs_1a.py --input data/sample_pdfs/task1 --output outputs/1a_outputs
-Run via Docker (Windows PowerShell):
+```
 
-powershell
-Copy
-Edit
+- **Input:** All PDFs in `data/sample_pdfs/task1`
+- **Output:** One JSON per PDF in `outputs/1a_outputs/`
+
+### **Run with Docker (PowerShell-ready):**
+
+```powershell
 docker run --rm `
-  -v "C:/path/to/submission/data/sample_pdfs/task1:/app/input" `
-  -v "C:/path/to/submission/outputs/1a_outputs:/app/output" `
+  -v "C:/Users/saiph/Downloads/final_submission/submission/data/sample_pdfs/task1:/app/input" `
+  -v "C:/Users/saiph/Downloads/final_submission/submission/outputs/1a_outputs:/app/output" `
   --network none `
   adobehackathon2025 `
   python process_pdfs_1a.py --input /app/input --output /app/output
-Output: One JSON file per PDF in outputs/1a_outputs/
+```
 
-Task 1b — Persona-Driven Section Analysis (Per Collection)
-Processes each collection folder (3–10 PDFs). Ranks sections by relevance to given persona and job.
+## 🚩 Task 1b — Advanced Section Extraction (and Persona-Driven Collections)
 
-Run locally:
+**Extracts, ranks sections/subsections, and supports persona-driven analysis over document collections (e.g., Collection 1/2/3).**
 
-Example for Collection 1 (Travel Planner):
+### **Run ONE Collection at a Time (Local, for each):**
 
-bash
-Copy
-Edit
+(*Always run from the `submission` folder!*)
+
+#### Collection 1:
+```sh
 python src/process_pdfs_1b.py --input "data/sample_pdfs/task2/Collection 1/PDFs" --output "outputs/1b_outputs/Collection1" --persona "Travel Planner" --job "Plan a trip of 4 days for a group of 10 college friends."
-Similarly for other collections with their personas and jobs:
+```
+#### Collection 2:
+```sh
+python src/process_pdfs_1b.py --input "data/sample_pdfs/task2/Collection 2/PDFs" --output "outputs/1b_outputs/Collection2" --persona "Investment Analyst" --job "Analyze revenue trends, R&D investments, and market positioning strategies"
+```
+#### Collection 3:
+```sh
+python src/process_pdfs_1b.py --input "data/sample_pdfs/task2/Collection 3/PDFs" --output "outputs/1b_outputs/Collection3" --persona "Undergraduate Chemistry Student" --job "Identify key concepts and mechanisms for exam preparation on reaction kinetics"
+```
 
-Collection 2: Investment Analyst
+- **Each run processes all PDFs in the collection input folder, and writes** one JSON per PDF **to the output folder.**
 
-Collection 3: Undergraduate Chemistry Student
+### **Run with Docker (PowerShell-ready):**
 
-Run via Docker (Windows PowerShell):
-
-Example for Collection 1:
-
-powershell
-Copy
-Edit
+#### Collection 1:
+```powershell
 docker run --rm `
-  -v "C:/path/to/task2/Collection 1/PDFs:/app/input" `
-  -v "C:/path/to/outputs/1b_outputs/Collection1:/app/output" `
+  -v "C:/Users/saiph/Downloads/final_submission/submission/data/sample_pdfs/task2/Collection 1/PDFs:/app/input" `
+  -v "C:/Users/saiph/Downloads/final_submission/submission/outputs/1b_outputs/Collection1:/app/output" `
   --network none `
   adobehackathon2025 `
   python process_pdfs_1b.py --input /app/input --output /app/output --persona "Travel Planner" --job "Plan a trip of 4 days for a group of 10 college friends."
-Repeat similarly for other collections with their respective parameters.
+```
+#### Collection 2:
+```powershell
+docker run --rm `
+  -v "C:/Users/saiph/Downloads/final_submission/submission/data/sample_pdfs/task2/Collection 2/PDFs:/app/input" `
+  -v "C:/Users/saiph/Downloads/final_submission/submission/outputs/1b_outputs/Collection2:/app/output" `
+  --network none `
+  adobehackathon2025 `
+  python process_pdfs_1b.py --input /app/input --output /app/output --persona "Investment Analyst" --job "Analyze revenue trends, R&D investments, and market positioning strategies"
+```
+#### Collection 3:
+```powershell
+docker run --rm `
+  -v "C:/Users/saiph/Downloads/final_submission/submission/data/sample_pdfs/task2/Collection 3/PDFs:/app/input" `
+  -v "C:/Users/saiph/Downloads/final_submission/submission/outputs/1b_outputs/Collection3:/app/output" `
+  --network none `
+  adobehackathon2025 `
+  python process_pdfs_1b.py --input /app/input --output /app/output --persona "Undergraduate Chemistry Student" --job "Identify key concepts and mechanisms for exam preparation on reaction kinetics"
+```
 
-📄 Output Format Examples
-Task 1a Output (per PDF):
-json
-Copy
-Edit
-{
-  "title": "Sample Title",
-  "outline": [
-    { "level": "H1", "text": "Introduction", "page": 1 },
-    { "level": "H2", "text": "Section A", "page": 2 }
-  ]
-}
-Task 1b Output (per PDF):
-json
-Copy
-Edit
-{
-  "title": "PDF Title",
-  "outline": [...],
-  "extracted_sections": [
-    {
-      "document": "doc.pdf",
-      "section_title": "Revenue Trends",
-      "importance_rank": 1,
-      "page_number": 3
-    }
-  ],
-  "subsection_analysis": [
-    {
-      "document": "doc.pdf",
-      "refined_text": "Here’s the full content of this section...",
-      "page_number": 3
-    }
-  ]
-}
-✅ Validation
-Sample outputs included in outputs/ folders
+## ✅ Output Format
 
-JSON files are valid UTF-8
+- **Task 1a:**  
+  Each JSON includes `"title"` and `"outline"`.
 
-No hardcoded rules; fully dynamic and compliant with Adobe’s sample specs
+- **Task 1b:**  
+  Each JSON includes `"title"`, `"outline"`, `"extracted_sections"`, and `"subsection_analysis"` — all per PDF.
+
+## 🏁 Tips
+
+- **Run one collection at a time for Task 1b.** Judges expect this—and it allows QA per-step.
+- **Outputs are always per-PDF in the chosen output folder.**
+- **If using Docker, always use PowerShell backtick (\`) for line breaks on Windows.**
+- **No separate Task 2 script needed. Task 1b supports all persona-collection outputs.**
+- **Scripts and Dockerfile are CPU-only, offline, and run under 60 seconds for standard collection sizes.**
+
+## 🧪 Testing
+
+Sample outputs are under `outputs/`. For correctness, review the extracted JSONs or use your own test script.
+#
